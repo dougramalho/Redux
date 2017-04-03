@@ -39,9 +39,9 @@ export const allSkiDays = (state = [], action) => {
 					skiDay(null, action)
 				]
 		case C.REMOVE_DAY:
-			return state.filter(skiDay => skiDay.date !== action.payload)
+			return state.filter(skiDay => skiDay.date !== action.payload);
 		default:
-			return state
+			return state;
 	}
 }
 
@@ -86,5 +86,5 @@ export default combineReducers({
     fetching,
     suggestions
   })
-})
+});
 
