@@ -1,4 +1,5 @@
 import C from "./constants"
+import fetch from "isomorphic-fetch"
 
 export function addDay(resort, date, powder=false, backcountry=false){
 
@@ -49,19 +50,21 @@ export const clearSuggestions = () => {
 	}
 }
 
-export const randomGoals = () => (dispatch, getState) =>{
+export const suggestResortNames = value => (dispatch) => {
+	dispatch({
+		type: C.FETCH_RESORT_NAMES
+	});
 
-	if(!getState().resortNames.fetching){
-		
-		dispatch({
-			type: C.FETCH_RESORT_NAMES
-		});
-
-		setTimeout(() => {
+	fetch('http://localhost:3333/resorts/' + value)
+		.then(response => response.json())
+		.then(suggestions => {
 			dispatch({
-				type: C.CANCEL_FETCHING
+				type: C.CHANGE_SUGGESTIONS,
+				payload: suggestions
 			});
-		}, 1500);
-	}
-	
+		})
+		.catch(error => {
+			dispatch(addError(error.message));
+		});
 }
+
